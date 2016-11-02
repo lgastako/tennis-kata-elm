@@ -1,7 +1,7 @@
-module Score exposing (Score, gameOver, initial, toString)
+module Score exposing (Score, gameOver, initial, point, toString)
 
-import Player exposing (Player)
-import Point exposing (Point(Love))
+import Player exposing (Player(Player1, Player2))
+import Point exposing (Point(Love, Fifteen, Thirty))
 
 
 type Score
@@ -56,3 +56,57 @@ gameOver score =
 
         _ ->
             False
+
+
+point : Player -> Score -> Score
+point scoringPlayer score =
+    case score of
+        Points { p1Point, p2Point } ->
+            case scoringPlayer of
+                Player1 ->
+                    case p1Point of
+                        Love ->
+                            Points { p1Point = Fifteen, p2Point = p2Point }
+
+                        Fifteen ->
+                            Points { p1Point = Thirty, p2Point = p2Point }
+
+                        Thirty ->
+                            Forty { player = scoringPlayer, otherPlayerPoint = p2Point }
+
+                Player2 ->
+                    case p2Point of
+                        Love ->
+                            Points { p1Point = p1Point, p2Point = Fifteen }
+
+                        Fifteen ->
+                            Points { p1Point = p1Point, p2Point = Thirty }
+
+                        Thirty ->
+                            Forty { player = scoringPlayer, otherPlayerPoint = p1Point }
+
+        Forty { player, otherPlayerPoint } ->
+            if scoringPlayer == player then
+                Game scoringPlayer
+            else
+                case otherPlayerPoint of
+                    Love ->
+                        Forty { player = player, otherPlayerPoint = Fifteen }
+
+                    Fifteen ->
+                        Forty { player = player, otherPlayerPoint = Thirty }
+
+                    Thirty ->
+                        Deuce
+
+        Deuce ->
+            Advantage scoringPlayer
+
+        Advantage advantagePlayer ->
+            if scoringPlayer == advantagePlayer then
+                Game scoringPlayer
+            else
+                Deuce
+
+        Game gamePlayer ->
+            Game gamePlayer

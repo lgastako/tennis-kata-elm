@@ -2,6 +2,7 @@ module Update exposing (update)
 
 import Model exposing (Model)
 import Msg exposing (Msg(..))
+import Score
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -11,4 +12,4 @@ update msg model =
             Model.empty ! []
 
         Score player ->
-            model ! []
+            { model | score = Score.point player model.score } ! []
