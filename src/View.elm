@@ -1,6 +1,6 @@
 module View exposing (view)
 
-import Html exposing (Html, button, div, h1, table, td, text, th, tr)
+import Html exposing (Html, button, br, div, h1, table, td, text, th, tr)
 import Html.Events exposing (onClick)
 import Model exposing (Model)
 import Msg exposing (Msg(NewGame, Score))
@@ -20,7 +20,10 @@ view model =
                 ]
 
         buttons =
-            scoreButtons ++ [ button [ onClick NewGame ] [ text "New Game" ] ]
+            scoreButtons
+                ++ [ br [] []
+                   , button [ onClick NewGame ] [ text "New Game" ]
+                   ]
     in
         div []
             [ h1 [] [ text "Tennis Kata" ]
