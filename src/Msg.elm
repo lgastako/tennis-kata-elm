@@ -1,5 +1,8 @@
 module Msg exposing (Msg(..))
 
+import Player exposing (Player)
+
 
 type Msg
-    = NoOp
+    = NewGame
+    | Score Player

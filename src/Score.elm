@@ -1,4 +1,4 @@
-module Score exposing (Score, initial, toString)
+module Score exposing (Score, gameOver, initial, toString)
 
 import Player exposing (Player)
 import Point exposing (Point(Love))
@@ -46,3 +46,13 @@ toString score =
 
         Game player ->
             "Game " ++ Player.toString player
+
+
+gameOver : Score -> Bool
+gameOver score =
+    case score of
+        Game _ ->
+            True
+
+        _ ->
+            False
